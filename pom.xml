@@ -142,6 +142,6 @@
         </dependency>
     </dependencies>
     <build>
-        <finalName>spring-mvc-form-security-annotations</finalName>
+        <finalName>spring-developer</finalName>
     </build>
 </project>
