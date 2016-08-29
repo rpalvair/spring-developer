@@ -25,4 +25,19 @@ public class HomeController {
 		}
 		return "index";
 	}
+
+	@RequestMapping(value = "/internal", method = RequestMethod.GET)
+	public String internal() {
+		return "internal";
+	}
+	
+	@RequestMapping(value = "/xml", method = RequestMethod.GET)
+	public String xml() {
+		return "xml";
+	}
+	
+	@RequestMapping(value = "/bundle", method = RequestMethod.GET)
+	public String bundle() {
+		return "bundle";
+	}
 }
