@@ -4,6 +4,7 @@ import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRegistration;
 
+import org.apache.cxf.transport.servlet.CXFServlet;
 import org.springframework.web.WebApplicationInitializer;
 import org.springframework.web.context.ContextLoaderListener;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
@@ -34,6 +35,12 @@ public class WebAppInitiallizer implements WebApplicationInitializer {
 	        container.addServlet("dispatcher", new DispatcherServlet(dispatcherContext));
 	      dispatcher.setLoadOnStartup(1);
 	      dispatcher.addMapping("/");
+	      
+	      ServletRegistration.Dynamic cxf =
+	  	        container.addServlet("cxfServlet", new CXFServlet());
+	  	      cxf.setLoadOnStartup(2);
+	  	      cxf.addMapping("/cxf/*");
+	      
 		
 	      log.info("application started");
 	}

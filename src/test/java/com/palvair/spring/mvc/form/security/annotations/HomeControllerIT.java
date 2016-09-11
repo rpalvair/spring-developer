@@ -14,15 +14,19 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import lombok.extern.log4j.Log4j;
+
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = MvcConfig.class)
 @WebAppConfiguration
+@Log4j
 public class HomeControllerIT {
 
 	@Autowired
 	private WebApplicationContext wac;
 
 	private MockMvc mockMvc;
+
 
 	@Before
 	public void setup() {

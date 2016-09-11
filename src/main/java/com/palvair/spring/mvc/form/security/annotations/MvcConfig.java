@@ -1,8 +1,14 @@
 package com.palvair.spring.mvc.form.security.annotations;
 
+import javax.xml.ws.Endpoint;
+
+import org.apache.cxf.Bus;
+import org.apache.cxf.bus.spring.SpringBus;
+import org.apache.cxf.jaxws.EndpointImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.ImportResource;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
@@ -13,9 +19,13 @@ import org.springframework.web.servlet.view.tiles3.TilesConfigurer;
 import org.springframework.web.servlet.view.tiles3.TilesView;
 import org.springframework.web.servlet.view.tiles3.TilesViewResolver;
 
+import com.palvair.spring.mvc.form.security.annotations.cxf.WsEmployeeService;
+import com.palvair.spring.mvc.form.security.annotations.cxf.WsEmployeeServiceImpl;
+
 @Configuration
 @EnableWebMvc
 @ComponentScan
+@ImportResource({ "classpath:META-INF/cxf/cxf.xml" })
 public class MvcConfig extends WebMvcConfigurerAdapter {
 
 	@Bean
@@ -51,7 +61,7 @@ public class MvcConfig extends WebMvcConfigurerAdapter {
 		xmlViewResolver.setOrder(2);
 		return xmlViewResolver;
 	}
-	
+
 	@Bean
 	public ResourceBundleViewResolver resourceBundleViewResolver() {
 		ResourceBundleViewResolver resourceBundleViewResolver = new ResourceBundleViewResolver();
@@ -59,4 +69,24 @@ public class MvcConfig extends WebMvcConfigurerAdapter {
 		resourceBundleViewResolver.setOrder(3);
 		return resourceBundleViewResolver;
 	}
+
+	@Bean(name = Bus.DEFAULT_BUS_ID)
+	public SpringBus cxf() {
+		return new SpringBus();
+	}
+
+	@Bean
+	public WsEmployeeService employeeService() {
+		return new WsEmployeeServiceImpl();
+	}
+
+	@Bean
+	public Endpoint endpoint() {
+		EndpointImpl endpoint = new EndpointImpl(cxf(), employeeService());
+		endpoint.publish("/employees");
+		// endpoint.setWsdlLocation("...");
+		endpoint.setAddress("/employees");
+		return endpoint;
+	}
+
 }
